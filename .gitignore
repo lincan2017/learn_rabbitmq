@@ -1,0 +1,9 @@
+*.iml
+*.bat
+classes/**
+.idea/
+out/
+target/
+logs/
+
+src/main/webapp/dist/.DS_Store

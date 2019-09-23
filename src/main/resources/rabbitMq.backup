@@ -1,0 +1,98 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/rabbit
+        http://www.springframework.org/schema/rabbit/spring-rabbit.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/util
+        http://www.springframework.org/schema/util/spring-util.xsd">
+
+    <util:map id="learn_queue_args">
+        <entry key="x-message-ttl" value-type="java.lang.Long" value="6000"/>
+        <entry key="x-dead-letter-routing-key" value="learn_spring_dead_routing_key"/>
+        <entry key="x-dead-letter-exchange" value="learn_spring_dead_direct_ex"/>
+    </util:map>
+
+    <!--配置连接-->
+    <rabbit:connection-factory id="connectionFactory"
+                               addresses="${rabbitmq.addresses}"
+                               username="${rabbitmq.username}"
+                               password="${rabbitmq.password}"
+                               virtual-host="${rabbitmq.virtualHost}"
+    />
+
+    <!--配置RabbitTemplate-->
+    <rabbit:template id="amqpTemplate" connection-factory="connectionFactory"/>
+
+    <!--配置后才可使用rabbit相关的注解-->
+    <rabbit:annotation-driven/>
+
+    <context:property-placeholder
+            location="classpath:/rabbitmq.properties"/>
+    <context:annotation-config/>
+
+    <context:component-scan base-package="learn.spring"/>
+
+
+    <!--RabbitListener 注解所需依赖的工厂-->
+    <bean id="manualAckContainerFactory" class="org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory">
+        <property name="connectionFactory" ref="connectionFactory"/>
+        <!--是否自动ack-->
+        <property name="acknowledgeMode" value="MANUAL"/>
+        <property name="taskExecutor" ref="mqShareThreadPoolTaskExecutor"/>
+        <property name="concurrentConsumers" value="4"/>
+    </bean>
+
+    <!--RabbitListener 注解所需依赖的工厂-->
+    <bean id="autoAckContainerFactory" class="org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory">
+        <property name="connectionFactory" ref="connectionFactory"/>
+        <!--是否自动ack-->
+        <property name="acknowledgeMode" value="AUTO"/>
+    </bean>
+
+    <rabbit:queue name="learn_spring_email_queue" id="learn_spring_email_queue"
+                  durable="false">
+        <rabbit:queue-arguments ref="learn_queue_args"/>
+    </rabbit:queue>
+
+
+    <rabbit:queue name="learn_spring_sms_queue" id="learn_spring_sms_queue" durable="false"/>
+    <rabbit:queue name="learn_spring_dead_queue" id="learn_spring_dead_queue" durable="false"/>
+
+
+    <rabbit:direct-exchange name="learn_spring_direct_ex" durable="false">
+        <rabbit:bindings>
+            <rabbit:binding key="learn_spring_email_routing_key" queue="learn_spring_email_queue"/>
+            <rabbit:binding key="learn_spring_sms_routing_key" queue="learn_spring_sms_queue"/>
+        </rabbit:bindings>
+    </rabbit:direct-exchange>
+
+    <!--配置sql类型exchange-->
+    <rabbit:direct-exchange name="learn_spring_dead_direct_ex" durable="false">
+        <rabbit:bindings>
+            <rabbit:binding key="learn_spring_dead_routing_key" queue="learn_spring_dead_queue"/>
+        </rabbit:bindings>
+    </rabbit:direct-exchange>
+
+    <!-- 配置线程池任务执行器 -->
+    <bean id ="mqShareThreadPoolTaskExecutor" class ="learn.spring.executor.MqShareThreadPoolTaskExecutor">
+        <!-- 线程池维护线程的最少数量 -->
+        <property name ="corePoolSize" value ="10" />
+        <!-- 线程池维护线程的最大数量 -->
+        <property name ="maxPoolSize" value ="100" />
+        <!-- 线程池所使用的缓冲队列 -->
+        <property name ="queueCapacity" value ="800" />
+        <!-- 线程池维护线程所允许的空闲时间 -->
+        <property name ="keepAliveSeconds" value ="600" />
+        <property name="awaitTerminationSeconds" value="30"/>
+        <property name="threadNamePrefix" value="mqPool-thread-"/>
+    </bean>
+
+    <!--配置RabbitAdmin-->
+    <rabbit:admin connection-factory="connectionFactory"/>
+</beans>
