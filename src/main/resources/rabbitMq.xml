@@ -44,6 +44,7 @@
         <property name="connectionFactory" ref="connectionFactory"/>
         <!--是否自动ack-->
         <property name="acknowledgeMode" value="MANUAL"/>
+        <property name="concurrentConsumers" value="5"/>
     </bean>
 
     <!--RabbitListener 注解所需依赖的工厂-->
