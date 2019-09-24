@@ -21,8 +21,12 @@ public class MyMqListener {
 
     private Logger logger = LoggerFactory.getLogger(MyMqListener.class);
 
+    private final RabbitServiceBo rabbitServiceBo;
+
     @Autowired
-    private RabbitServiceBo rabbitServiceBo;
+    public MyMqListener(RabbitServiceBo rabbitServiceBo) {
+        this.rabbitServiceBo = rabbitServiceBo;
+    }
 
     @RabbitListener(queues = RabbitMqContant.SMS_QUEUE, containerFactory = "manualAckContainerFactory")
     public void consumeSms(Message message, Channel channel) {
@@ -44,6 +48,7 @@ public class MyMqListener {
     @RabbitListener(queues = RabbitMqContant.DEAD_QUEUE, containerFactory = "autoAckContainerFactory")
     public void consumeDead(Message message, Channel channel) {
         logger.info("Dead : {}", new String(message.getBody()));
+        rabbitServiceBo.ack(message,channel, true);
     }
 
 
