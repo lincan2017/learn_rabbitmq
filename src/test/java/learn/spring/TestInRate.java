@@ -35,7 +35,7 @@ public class TestInRate extends JunitBase {
         for (int i =0; i<size; i++) {
             begin = System.nanoTime();
             for (int j=0; j<count; j++) {
-                rabbitService.sendToRabbit(RabbitMqContant.DIRECT_EX, RabbitMqContant.SMS_R_KEY,
+                rabbitService.sendToRabbit(RabbitMqConstant.DIRECT_EX, RabbitMqConstant.SMS_R_KEY,
                         "I am a p msg...", MessageDeliveryMode.PERSISTENT);
             }
             end = System.nanoTime();
@@ -61,7 +61,7 @@ public class TestInRate extends JunitBase {
         for (int i =0; i<size; i++) {
             begin = System.nanoTime();
             for (int j=0; j<count; j++) {
-                rabbitService.sendToRabbit(RabbitMqContant.DEAD_EX, RabbitMqContant.DEAD_R_KEY,
+                rabbitService.sendToRabbit(RabbitMqConstant.DEAD_EX, RabbitMqConstant.DEAD_R_KEY,
                         "I am a non_p msg...", MessageDeliveryMode.NON_PERSISTENT);
             }
             end = System.nanoTime();

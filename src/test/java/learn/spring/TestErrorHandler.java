@@ -19,7 +19,7 @@ public class TestErrorHandler extends JunitBase {
     @Test
     public void testDefaultErrorHandler() throws Exception{
         for (int i=0; i<10000; i++) {
-            rabbitServiceBo.sendToRabbit(RabbitMqContant.DEAD_EX, RabbitMqContant.DEAD_R_KEY,"I am a dead msg...", MessageDeliveryMode.NON_PERSISTENT);
+            rabbitServiceBo.sendToRabbit(RabbitMqConstant.DEAD_EX, RabbitMqConstant.DEAD_R_KEY,"I am a dead msg...", MessageDeliveryMode.NON_PERSISTENT);
         }
 
         for (int i=0; i<8; i++) {

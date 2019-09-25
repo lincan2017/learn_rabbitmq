@@ -20,9 +20,9 @@ public class TestRabbitService extends JunitBase {
     @Test
     public void testMultiContainerFactory() throws Exception{
         for (int i=0; i<10000; i++) {
-            rabbitService.sendToRabbit(RabbitMqContant.DIRECT_EX, RabbitMqContant.SMS_R_KEY,"I am a sms...", MessageDeliveryMode.NON_PERSISTENT);
-            rabbitService.sendToRabbit(RabbitMqContant.DIRECT_EX, RabbitMqContant.EMAIL_R_KEY,"I am a email...", MessageDeliveryMode.NON_PERSISTENT);
-            rabbitService.sendToRabbit(RabbitMqContant.DEAD_EX, RabbitMqContant.DEAD_R_KEY,"I am a dead msg...", MessageDeliveryMode.NON_PERSISTENT);
+            rabbitService.sendToRabbit(RabbitMqConstant.DIRECT_EX, RabbitMqConstant.SMS_R_KEY,"I am a sms...", MessageDeliveryMode.NON_PERSISTENT);
+            rabbitService.sendToRabbit(RabbitMqConstant.DIRECT_EX, RabbitMqConstant.EMAIL_R_KEY,"I am a email...", MessageDeliveryMode.NON_PERSISTENT);
+            rabbitService.sendToRabbit(RabbitMqConstant.DEAD_EX, RabbitMqConstant.DEAD_R_KEY,"I am a dead msg...", MessageDeliveryMode.NON_PERSISTENT);
         }
 
         for (int i=0; i<5; i++) {
@@ -35,7 +35,7 @@ public class TestRabbitService extends JunitBase {
     public void testSeveralConsume() throws Exception{
 
         for (int i=0; i<100000; i++) {
-            rabbitService.sendToRabbit(RabbitMqContant.DIRECT_EX, RabbitMqContant.EMAIL_R_KEY,"I am a email...", MessageDeliveryMode.NON_PERSISTENT);
+            rabbitService.sendToRabbit(RabbitMqConstant.DIRECT_EX, RabbitMqConstant.EMAIL_R_KEY,"I am a email...", MessageDeliveryMode.NON_PERSISTENT);
         }
 
         for (int i=0; i<10; i++) {
@@ -47,8 +47,8 @@ public class TestRabbitService extends JunitBase {
     @Test
     public void testPersistentMsg() {
         for (int i=0; i<10; i++) {
-            rabbitService.sendToRabbit(RabbitMqContant.DIRECT_EX, RabbitMqContant.SMS_R_KEY, "I am a sms...", MessageDeliveryMode.NON_PERSISTENT);
-            rabbitService.sendToRabbit(RabbitMqContant.DIRECT_EX, RabbitMqContant.SMS_R_KEY, "I am a sms...", MessageDeliveryMode.PERSISTENT);
+            rabbitService.sendToRabbit(RabbitMqConstant.DIRECT_EX, RabbitMqConstant.SMS_R_KEY, "I am a sms...", MessageDeliveryMode.NON_PERSISTENT);
+            rabbitService.sendToRabbit(RabbitMqConstant.DIRECT_EX, RabbitMqConstant.SMS_R_KEY, "I am a sms...", MessageDeliveryMode.PERSISTENT);
         }
     }
 
