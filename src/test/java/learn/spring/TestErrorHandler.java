@@ -2,6 +2,7 @@ package learn.spring;
 
 import learn.base.JunitBase;
 import org.junit.Test;
+import org.springframework.amqp.core.MessageDeliveryMode;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -18,7 +19,7 @@ public class TestErrorHandler extends JunitBase {
     @Test
     public void testDefaultErrorHandler() throws Exception{
         for (int i=0; i<10000; i++) {
-            rabbitServiceBo.sendToExchange(RabbitMqContant.DEAD_EX, RabbitMqContant.DEAD_R_KEY,"I am a dead msg...");
+            rabbitServiceBo.sendToRabbit(RabbitMqContant.DEAD_EX, RabbitMqContant.DEAD_R_KEY,"I am a dead msg...", MessageDeliveryMode.NON_PERSISTENT);
         }
 
         for (int i=0; i<8; i++) {

@@ -28,7 +28,7 @@ public class MyMqListener {
         this.rabbitServiceBo = rabbitServiceBo;
     }
 
-    @RabbitListener(queues = RabbitMqContant.SMS_QUEUE, containerFactory = "manualAckContainerFactory")
+    //@RabbitListener(queues = RabbitMqContant.SMS_QUEUE, containerFactory = "manualAckContainerFactory")
     public void consumeSms(Message message, Channel channel) {
         logger.info("Sms : {}", new String(message.getBody()));
 
@@ -40,12 +40,12 @@ public class MyMqListener {
         }
     }
 
-    @RabbitListener(queues = RabbitMqContant.EMAIL_QUEUE, containerFactory = "manualAckContainerFactory")
+    //@RabbitListener(queues = RabbitMqContant.EMAIL_QUEUE, containerFactory = "manualAckContainerFactory")
     public void consumeEmail(Message message, Channel channel) {
         logger.info("Email : {}", new String(message.getBody()));
     }
 
-    @RabbitListener(queues = RabbitMqContant.DEAD_QUEUE, containerFactory = "autoAckContainerFactory")
+    //@RabbitListener(queues = RabbitMqContant.DEAD_QUEUE, containerFactory = "autoAckContainerFactory")
     public void consumeDead(Message message, Channel channel) {
         logger.info("Dead : {}", new String(message.getBody()));
         rabbitServiceBo.ack(message,channel, true);

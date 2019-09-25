@@ -54,17 +54,16 @@
         <property name="acknowledgeMode" value="AUTO"/>
     </bean>
 
-    <rabbit:queue name="learn_spring_email_queue" id="learn_spring_email_queue"
-                  durable="false">
+    <rabbit:queue name="learn_spring_email_queue" id="learn_spring_email_queue">
         <rabbit:queue-arguments ref="learn_queue_args"/>
     </rabbit:queue>
 
 
-    <rabbit:queue name="learn_spring_sms_queue" id="learn_spring_sms_queue" durable="false"/>
-    <rabbit:queue name="learn_spring_dead_queue" id="learn_spring_dead_queue" durable="false"/>
+    <rabbit:queue name="learn_spring_sms_queue" id="learn_spring_sms_queue"/>
+    <rabbit:queue name="learn_spring_dead_queue" id="learn_spring_dead_queue"/>
 
 
-    <rabbit:direct-exchange name="learn_spring_direct_ex" durable="false">
+    <rabbit:direct-exchange name="learn_spring_direct_ex" >
         <rabbit:bindings>
             <rabbit:binding key="learn_spring_email_routing_key" queue="learn_spring_email_queue"/>
             <rabbit:binding key="learn_spring_sms_routing_key" queue="learn_spring_sms_queue"/>
@@ -72,7 +71,7 @@
     </rabbit:direct-exchange>
 
     <!--配置sql类型exchange-->
-    <rabbit:direct-exchange name="learn_spring_dead_direct_ex" durable="false">
+    <rabbit:direct-exchange name="learn_spring_dead_direct_ex">
         <rabbit:bindings>
             <rabbit:binding key="learn_spring_dead_routing_key" queue="learn_spring_dead_queue"/>
         </rabbit:bindings>
