@@ -16,7 +16,6 @@ import org.springframework.stereotype.Component;
  * @author : Lin Can
  * @date : 2019/4/29 23:15
  */
-@Component
 public class MyMqListener {
 
     private Logger logger = LoggerFactory.getLogger(MyMqListener.class);
@@ -50,9 +49,10 @@ public class MyMqListener {
         logger.info("Dead : {}", new String(message.getBody()));
     }
 
-    @RabbitListener(queues = RabbitMqConstant.SMS_QUEUE, containerFactory = "autoAckContainerFactory")
+    @RabbitListener(queues = RabbitMqConstant.SMS_QUEUE, containerFactory = "manualAckContainerFactory")
     public void consumeSms(Message message, Channel channel) {
         logger.info("Sms : {}", new String(message.getBody()));
+        rabbitServiceBo.ack(message,channel,false);
     }
 
 
