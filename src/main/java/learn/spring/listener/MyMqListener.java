@@ -55,6 +55,5 @@ public class MyMqListener {
         rabbitServiceBo.ack(message,channel,false);
     }
 
-    //test
 
 }
