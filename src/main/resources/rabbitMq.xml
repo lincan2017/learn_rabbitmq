@@ -44,7 +44,8 @@
         <property name="connectionFactory" ref="connectionFactory"/>
         <!--是否自动ack-->
         <property name="acknowledgeMode" value="MANUAL"/>
-        <property name="concurrentConsumers" value="5"/>
+        <property name="concurrentConsumers" value="2"/>
+        <property name="prefetchCount" value="1"/>
     </bean>
 
     <!--RabbitListener 注解所需依赖的工厂-->
@@ -52,6 +53,8 @@
         <property name="connectionFactory" ref="connectionFactory"/>
         <!--是否自动ack-->
         <property name="acknowledgeMode" value="AUTO"/>
+        <property name="concurrentConsumers" value="2"/>
+        <property name="prefetchCount" value="1"/>
     </bean>
 
     <rabbit:queue name="learn_spring_email_queue" id="learn_spring_email_queue">

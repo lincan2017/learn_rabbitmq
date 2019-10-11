@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
  * @author : Lin Can
  * @date : 2019/4/29 23:15
  */
+@Component
 public class MyMqListener {
 
     private Logger logger = LoggerFactory.getLogger(MyMqListener.class);
@@ -46,12 +47,24 @@ public class MyMqListener {
 
     @RabbitListener(queues = RabbitMqConstant.DEAD_QUEUE, containerFactory = "autoAckContainerFactory")
     public void consumeDead(Message message, Channel channel) {
-        logger.info("Dead : {}", new String(message.getBody()));
+        logger.info("ChannelNum: {} ThreadId: {} Dead : {}",
+                channel.getChannelNumber(), Thread.currentThread().getId(), new String(message.getBody()));
+        try{
+            Thread.sleep(200000);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @RabbitListener(queues = RabbitMqConstant.SMS_QUEUE, containerFactory = "manualAckContainerFactory")
     public void consumeSms(Message message, Channel channel) {
         logger.info("Sms : {}", new String(message.getBody()));
+        try{
+            Thread.sleep(20000);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         rabbitServiceBo.ack(message,channel,false);
     }
 

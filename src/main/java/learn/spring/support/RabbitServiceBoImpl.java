@@ -43,6 +43,10 @@ public class RabbitServiceBoImpl implements RabbitServiceBo {
     }
 
 
+    public void test() {
+
+    }
+
     @Override
     public void sendToRabbit (String exchange, String routingKey, Object object, MessageDeliveryMode messageDeliveryMode) {
 
