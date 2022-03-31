@@ -11,7 +11,7 @@
     <properties>
         <spring-rabbitmq>2.1.10.RELEASE</spring-rabbitmq>
         <junit.version>4.12</junit.version>
-        <spring.version>5.1.5.RELEASE</spring.version>
+        <spring.version>5.3.18</spring.version>
         <slf4j.version>1.7.25</slf4j.version>
         <log4j.version>1.2.17</log4j.version>
     </properties>
